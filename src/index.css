@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Sky-Frost Modern Theme */
+  --bg-sky: #f8fafc;
+  --bg-frost: #e0f2fe;
+  --text-dark: #0f172a;
+  --glass-border: rgba(14, 165, 233, 0.15);
+  --glass-surface: rgba(255, 255, 255, 0.7);
+  --accent-blue: #0284c7;
+  --accent-sky: #7dd3fc;
+
+  color-scheme: light;
+  background-color: var(--bg-sky);
+  color: var(--text-dark);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+}
+
+/* Custom Utility for Sky-Frost Glassmorphism */
+@layer utilities {
+  .glass-panel {
+    background: var(--glass-surface);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px rgba(14, 165, 233, 0.1);
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, #0284c7, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .sky-glow {
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.2);
+  }
+}
+
+@keyframes blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
