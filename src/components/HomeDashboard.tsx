@@ -1,32 +1,31 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { motion } from "framer-motion";
-import { FileText, Shield, Target, TrendingUp, Zap } from "lucide-react";
+import { FileText, Target } from "lucide-react";
 import LivePerformance from "./LivePerformance";
 
 export default function HomeDashboard() {
-  const goals = [
-    {
-      icon: TrendingUp,
-      title: "ความน่าเชื่อถือ (Reliability)",
-      value: "99.9%",
-      description: "เวลาการทำงานของระบบต่อเนื่อง",
-      color: "from-sky-400 to-blue-500",
-    },
-    {
-      icon: Shield,
-      title: "ความปลอดภัย (Zero Accident)",
-      value: "0",
-      description: "อุบัติเหตุในปีนี้",
-      color: "from-emerald-400 to-green-500",
-    },
-    {
-      icon: Zap,
-      title: "ประสิทธิภาพการผลิต",
-      value: "95.2%",
-      description: "Efficiency Rating",
-      color: "from-amber-400 to-orange-500",
-    },
-  ];
+  // const goals = [
+  //   {
+  //     icon: TrendingUp,
+  //     title: "ความน่าเชื่อถือ (Reliability)",
+  //     value: "99.9%",
+  //     description: "เวลาการทำงานของระบบต่อเนื่อง",
+  //     color: "from-sky-400 to-blue-500",
+  //   },
+  //   {
+  //     icon: Shield,
+  //     title: "ความปลอดภัย (Zero Accident)",
+  //     value: "0",
+  //     description: "อุบัติเหตุในปีนี้",
+  //     color: "from-emerald-400 to-green-500",
+  //   },
+  //   {
+  //     icon: Zap,
+  //     title: "ประสิทธิภาพการผลิต",
+  //     value: "95.2%",
+  //     description: "Efficiency Rating",
+  //     color: "from-amber-400 to-orange-500",
+  //   },
+  // ];
 
   const qualityGoals = [
     {
