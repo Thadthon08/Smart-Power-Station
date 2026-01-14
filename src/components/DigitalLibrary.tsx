@@ -46,7 +46,7 @@ const libraryCards = [
 export default function DigitalLibrary() {
   const { librarySubMenu, setLibrarySubMenu } = useNavigationStore();
 
-  const openPdf = (pdfUrl: string, title: string) => {
+  const openPdf = (pdfUrl: string) => {
     window.open(pdfUrl, "_blank", "noopener,noreferrer");
   };
 
@@ -136,7 +136,7 @@ export default function DigitalLibrary() {
                 whileTap={{ scale: 0.98 }}
                 onClick={() =>
                   card.pdfUrl
-                    ? openPdf(card.pdfUrl, card.title)
+                    ? openPdf(card.pdfUrl)
                     : setLibrarySubMenu(card.title)
                 }
                 className="glass-panel p-6 sm:p-8 rounded-xl sm:rounded-2xl text-left hover:shadow-xl transition-all"
