@@ -38,8 +38,8 @@ function App() {
 
       <NavbarNew />
 
-      <main className="pt-28 pb-16">
-        <div className="max-w-7xl mx-auto px-6">
+      <main className="pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPage}

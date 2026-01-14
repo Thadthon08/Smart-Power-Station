@@ -61,13 +61,17 @@ const departments = [
 
 export default function Departments() {
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold text-white mb-2">แผนกของเรา</h2>
-        <p className="text-gray-400">ภาพรวมของโครงสร้างองค์กรและทีมงานของเรา</p>
+    <div className="p-4 sm:p-6 md:p-8">
+      <div className="mb-6 sm:mb-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+          แผนกของเรา
+        </h2>
+        <p className="text-sm sm:text-base text-gray-400">
+          ภาพรวมของโครงสร้างองค์กรและทีมงานของเรา
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {departments.map((dept, index) => {
           const Icon = dept.icon;
           return (
@@ -76,23 +80,27 @@ export default function Departments() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="glass-panel p-6 rounded-2xl hover:bg-white/5 transition-all group"
+              className="glass-panel p-5 sm:p-6 rounded-xl sm:rounded-2xl hover:bg-white/5 transition-all group"
             >
               <div
-                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${dept.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
+                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${dept.color} flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}
               >
-                <Icon size={24} className="text-white" />
+                <Icon size={20} className="sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-xl font-bold text-white">{dept.name}</h3>
-                <span className="text-xs bg-white/10 px-2 py-1 rounded-full text-gray-300">
+                <h3 className="text-lg sm:text-xl font-bold text-white">
+                  {dept.name}
+                </h3>
+                <span className="text-[10px] sm:text-xs bg-white/10 px-2 py-1 rounded-full text-gray-300">
                   {dept.count} สมาชิก
                 </span>
               </div>
-              <p className="text-gray-400 text-sm mb-4 h-10">{dept.desc}</p>
-              <div className="flex items-center gap-2 pt-4 border-t border-white/5">
-                <div className="w-6 h-6 rounded-full bg-gray-600"></div>
-                <span className="text-xs text-gray-500">
+              <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 h-8 sm:h-10">
+                {dept.desc}
+              </p>
+              <div className="flex items-center gap-2 pt-3 sm:pt-4 border-t border-white/5">
+                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gray-600"></div>
+                <span className="text-[10px] sm:text-xs text-gray-500">
                   หัวหน้าทีม: <span className="text-gray-300">{dept.head}</span>
                 </span>
               </div>

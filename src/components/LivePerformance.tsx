@@ -9,8 +9,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useTaskStore } from "../store/taskStore";
 import { useComplianceStore } from "../store/complianceStore";
+import { useTaskStore } from "../store/taskStore";
 
 export default function LivePerformance() {
   const { tasks, getTaskStats, toggleTask } = useTaskStore();
@@ -54,20 +54,29 @@ export default function LivePerformance() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-slate-900 mb-6">
+      <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-4 sm:mb-6">
         ประสิทธิภาพแบบเรียลไทม์
       </h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Daily Tasks Progress */}
         <div className="lg:col-span-1">
-          <div className="glass-panel p-6 rounded-2xl">
+          <div className="glass-panel p-5 sm:p-6 rounded-xl sm:rounded-2xl">
             <h3 className="font-bold text-slate-900 mb-4">งานประจำวัน</h3>
 
             {/* Circular Progress */}
             <div className="flex justify-center items-center mb-6">
-              <div className="relative w-40 h-40">
-                <svg className="transform -rotate-90 w-40 h-40">
+              <div className="relative w-32 h-32 sm:w-40 sm:h-40">
+                <svg className="transform -rotate-90 w-32 h-32 sm:w-40 sm:h-40">
+                  <circle
+                    cx="64"
+                    cy="64"
+                    r="56"
+                    stroke="currentColor"
+                    strokeWidth="10"
+                    fill="none"
+                    className="text-sky-100 sm:hidden"
+                  />
                   <circle
                     cx="80"
                     cy="80"
@@ -75,7 +84,21 @@ export default function LivePerformance() {
                     stroke="currentColor"
                     strokeWidth="12"
                     fill="none"
-                    className="text-sky-100"
+                    className="text-sky-100 hidden sm:block"
+                  />
+                  <circle
+                    cx="64"
+                    cy="64"
+                    r="56"
+                    stroke="currentColor"
+                    strokeWidth="10"
+                    fill="none"
+                    strokeDasharray={`${2 * Math.PI * 56}`}
+                    strokeDashoffset={`${
+                      2 * Math.PI * 56 * (1 - stats.completionRate / 100)
+                    }`}
+                    className="text-sky-500 transition-all duration-500 sm:hidden"
+                    strokeLinecap="round"
                   />
                   <circle
                     cx="80"
@@ -88,33 +111,35 @@ export default function LivePerformance() {
                     strokeDashoffset={`${
                       2 * Math.PI * 70 * (1 - stats.completionRate / 100)
                     }`}
-                    className="text-sky-500 transition-all duration-500"
+                    className="text-sky-500 transition-all duration-500 hidden sm:block"
                     strokeLinecap="round"
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-4xl font-bold text-sky-600">
+                  <span className="text-3xl sm:text-4xl font-bold text-sky-600">
                     {stats.completionRate}%
                   </span>
-                  <span className="text-sm text-slate-500">เสร็จสิ้น</span>
+                  <span className="text-xs sm:text-sm text-slate-500">
+                    เสร็จสิ้น
+                  </span>
                 </div>
               </div>
             </div>
 
             <div className="space-y-3">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <span className="text-slate-600">งานทั้งหมด</span>
                 <span className="font-semibold text-slate-900">
                   {stats.total} งาน
                 </span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <span className="text-slate-600">เสร็จแล้ว</span>
                 <span className="font-semibold text-emerald-600">
                   {stats.completed} งาน
                 </span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <span className="text-slate-600">คงเหลือ</span>
                 <span className="font-semibold text-amber-600">
                   {stats.total - stats.completed} งาน
@@ -126,15 +151,15 @@ export default function LivePerformance() {
 
         {/* Power Output Chart */}
         <div className="lg:col-span-2">
-          <div className="glass-panel p-6 rounded-2xl">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-slate-900">
+          <div className="glass-panel p-5 sm:p-6 rounded-xl sm:rounded-2xl">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mb-4">
+              <h3 className="font-bold text-slate-900 text-sm sm:text-base">
                 กราฟกำลังไฟฟ้า (Power Output)
               </h3>
-              <span className="text-sm text-slate-500">วันนี้</span>
+              <span className="text-xs sm:text-sm text-slate-500">วันนี้</span>
             </div>
 
-            <div className="h-64">
+            <div className="h-48 sm:h-56 md:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={powerData}>
                   <defs>
@@ -187,15 +212,17 @@ export default function LivePerformance() {
       </div>
 
       {/* Task List */}
-      <div className="mt-6 glass-panel p-6 rounded-2xl">
-        <h3 className="font-bold text-slate-900 mb-4">รายการงานวันนี้</h3>
-        <div className="space-y-3">
+      <div className="mt-4 sm:mt-6 glass-panel p-4 sm:p-6 rounded-xl sm:rounded-2xl">
+        <h3 className="font-bold text-slate-900 mb-3 sm:mb-4 text-sm sm:text-base">
+          รายการงานวันนี้
+        </h3>
+        <div className="space-y-2 sm:space-y-3">
           {/* Regular Tasks */}
           {tasks.slice(0, 3).map((task) => (
             <motion.div
               key={task.id}
               layout
-              className={`flex items-center gap-4 p-4 rounded-xl border transition-all ${
+              className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border transition-all ${
                 task.completed
                   ? "bg-slate-50 border-slate-200 opacity-60"
                   : "bg-white border-sky-200 hover:border-sky-400"
@@ -203,20 +230,23 @@ export default function LivePerformance() {
             >
               <button
                 onClick={() => toggleTask(task.id)}
-                className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors ${
+                className={`w-5 h-5 sm:w-6 sm:h-6 rounded-md border-2 flex items-center justify-center transition-colors flex-shrink-0 ${
                   task.completed
                     ? "bg-sky-500 border-sky-500"
                     : "border-slate-300 hover:border-sky-400"
                 }`}
               >
                 {task.completed && (
-                  <CheckCircle2 size={16} className="text-white" />
+                  <CheckCircle2
+                    size={14}
+                    className="sm:w-4 sm:h-4 text-white"
+                  />
                 )}
               </button>
 
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <p
-                  className={`font-medium ${
+                  className={`font-medium text-sm sm:text-base truncate ${
                     task.completed
                       ? "text-slate-400 line-through"
                       : "text-slate-900"
@@ -225,18 +255,20 @@ export default function LivePerformance() {
                   {task.title}
                 </p>
                 {task.category && (
-                  <span className="text-xs text-slate-500">
+                  <span className="text-[10px] sm:text-xs text-slate-500">
                     {task.category}
                   </span>
                 )}
               </div>
 
               <span
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${getPriorityColor(
+                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold border flex-shrink-0 ${getPriorityColor(
                   task.priority
                 )}`}
               >
-                {getPriorityIcon(task.priority)}
+                <span className="hidden sm:inline">
+                  {getPriorityIcon(task.priority)}
+                </span>
                 {task.priority}
               </span>
             </motion.div>
@@ -254,21 +286,24 @@ export default function LivePerformance() {
               <motion.div
                 key={record.id}
                 layout
-                className="flex items-center gap-4 p-4 rounded-xl border bg-white border-purple-200 hover:border-purple-400 transition-all"
+                className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border bg-white border-purple-200 hover:border-purple-400 transition-all"
               >
-                <div className="w-6 h-6 rounded-md bg-purple-100 flex items-center justify-center">
-                  <ClipboardCheck size={16} className="text-purple-600" />
+                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-purple-100 flex items-center justify-center flex-shrink-0">
+                  <ClipboardCheck
+                    size={14}
+                    className="sm:w-4 sm:h-4 text-purple-600"
+                  />
                 </div>
 
-                <div className="flex-1">
-                  <p className="font-medium text-slate-900">
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-slate-900 text-sm sm:text-base truncate">
                     {record.equipmentName} - {record.documentType}
                   </p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-slate-500">
+                    <span className="text-[10px] sm:text-xs text-slate-500 whitespace-nowrap">
                       ความคืบหน้า: {completedItems}/{totalItems}
                     </span>
-                    <div className="flex-1 max-w-[120px] h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                    <div className="flex-1 max-w-[80px] sm:max-w-[120px] h-1.5 bg-slate-200 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-purple-500 transition-all"
                         style={{ width: `${progress}%` }}
@@ -278,7 +313,7 @@ export default function LivePerformance() {
                 </div>
 
                 <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                  className={`px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold flex-shrink-0 ${
                     record.status === "ผ่าน"
                       ? "bg-emerald-100 text-emerald-700"
                       : record.status === "ไม่ผ่าน"
