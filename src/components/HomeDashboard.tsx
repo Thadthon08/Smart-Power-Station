@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { motion } from "framer-motion";
 import { FileText, Shield, Target, TrendingUp, Zap } from "lucide-react";
 import LivePerformance from "./LivePerformance";
@@ -71,7 +72,7 @@ export default function HomeDashboard() {
     {
       id: 6,
       item: "Kaizen ตามนโยบาย/ปัญหาของหน่วยงาน",
-      target: "3 เรื่องปี",
+      target: "3 เรื่อง/ปี",
       monthly: 0,
       accumulated: 0,
       difference: 0,
@@ -127,112 +128,117 @@ export default function HomeDashboard() {
           </h2>
         </div>
 
-        {/* Quality Goals Table */}
-        <div className="glass-panel rounded-2xl overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gradient-to-r from-sky-500 to-blue-600 text-white">
-                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-sky-400/50">
-                    ลำดับ
-                  </th>
-                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-sky-400/50">
-                    รายการ
-                  </th>
-                  <th className="px-4 py-4 text-center text-sm font-semibold border-r border-sky-400/50">
-                    <div>เป้าหมาย</div>
-                    <div className="text-xs font-normal">ปี 68/69</div>
-                  </th>
-                  <th
-                    className="px-6 py-4 text-center text-sm font-semibold border-r border-sky-400/50"
-                    colSpan={2}
-                  >
-                    ผลงานที่ทำได้
-                  </th>
-                  <th className="px-4 py-4 text-center text-sm font-semibold">
-                    ผลต่าง
-                  </th>
-                </tr>
-                <tr className="bg-sky-500/90 text-white">
-                  <th className="border-t border-sky-400/50"></th>
-                  <th className="border-t border-sky-400/50"></th>
-                  <th className="border-t border-sky-400/50"></th>
-                  <th className="px-4 py-2 text-center text-xs font-medium border-t border-r border-sky-400/50">
-                    ประจำสัปดาห์
-                  </th>
-                  <th className="px-4 py-2 text-center text-xs font-medium border-t border-r border-sky-400/50">
-                    สะสม
-                  </th>
-                  <th className="border-t border-sky-400/50"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {qualityGoals.map((goal, index) => (
-                  <motion.tr
-                    key={goal.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="hover:bg-sky-50/50 transition-colors border-b border-slate-200 last:border-b-0"
-                  >
-                    <td className="px-4 py-4 text-center text-sm font-medium text-slate-700 border-r border-slate-200">
+        {/* Quality Goals Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {qualityGoals.map((goal, index) => (
+            <motion.div
+              key={goal.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="glass-panel rounded-2xl overflow-hidden hover:shadow-2xl transition-all group"
+            >
+              {/* Card Header with Badge */}
+              <div className="relative p-6 pb-5">
+                <div className="flex items-start gap-4 mb-5">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform">
+                    <span className="text-white font-bold text-lg">
                       {goal.id}
-                    </td>
-                    <td className="px-4 py-4 text-sm text-slate-800 border-r border-slate-200">
-                      {goal.item}
-                    </td>
-                    <td className="px-4 py-4 text-center text-sm font-semibold text-sky-600 border-r border-slate-200">
-                      {goal.target}
-                    </td>
-                    <td className="px-4 py-4 text-center text-sm font-medium text-slate-700 border-r border-slate-200">
+                    </span>
+                  </div>
+                  <h3 className="font-semibold text-slate-800 text-base leading-relaxed pt-1">
+                    {goal.item}
+                  </h3>
+                </div>
+
+                {/* Target Section */}
+                <div className="bg-gradient-to-br from-sky-50 to-blue-50 rounded-xl p-4 border border-sky-100">
+                  <div className="text-xs font-medium text-slate-600 mb-2">
+                    เป้าหมาย ปี 68/69
+                  </div>
+                  <div className="text-3xl font-bold bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
+                    {goal.target}
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats Section */}
+              <div className="bg-white/60 px-6 py-5 border-t border-slate-200">
+                <div className="grid grid-cols-3 gap-4">
+                  {/* ประจำสัปดาห์ */}
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-slate-500 mb-2">
+                      ประจำสัปดาห์
+                    </div>
+                    <div className="text-3xl font-bold text-slate-900">
                       {goal.monthly}
-                    </td>
-                    <td className="px-4 py-4 text-center text-sm font-medium text-slate-700 border-r border-slate-200">
+                    </div>
+                  </div>
+
+                  {/* สะสม */}
+                  <div className="text-center border-x border-slate-200">
+                    <div className="text-xs font-semibold text-slate-500 mb-2">
+                      สะสม
+                    </div>
+                    <div className="text-3xl font-bold text-slate-900">
                       {goal.accumulated}
-                    </td>
-                    <td className="px-4 py-4 text-center text-sm font-medium text-slate-700">
+                    </div>
+                  </div>
+
+                  {/* ผลต่าง */}
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-slate-500 mb-2">
+                      ผลต่าง
+                    </div>
+                    <div className="text-3xl font-bold text-emerald-600">
                       {goal.difference}
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
         {/* Original Goals Cards */}
-        <h3 className="text-xl font-bold text-slate-900 mb-4 mt-8">
-          เป้าหมายหลัก
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-          {goals.map((goal, index) => {
-            const Icon = goal.icon;
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="glass-panel p-5 sm:p-6 rounded-xl sm:rounded-2xl hover:shadow-xl transition-all"
-              >
-                <div
-                  className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${goal.color} flex items-center justify-center mb-3 sm:mb-4 sky-glow`}
+        {/* <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-panel p-6 sm:p-8 rounded-2xl mt-8"
+        >
+          <h3 className="text-xl font-bold text-slate-900 mb-6">
+            เป้าหมายหลัก
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+            {goals.map((goal, index) => {
+              const Icon = goal.icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="glass-panel p-5 sm:p-6 rounded-xl sm:rounded-2xl hover:shadow-xl transition-all"
                 >
-                  <Icon size={24} className="sm:w-7 sm:h-7 text-white" />
-                </div>
-                <h3 className="font-bold text-slate-900 text-base sm:text-lg mb-2">
-                  {goal.title}
-                </h3>
-                <div className="text-3xl sm:text-4xl font-bold text-sky-600 mb-2">
-                  {goal.value}
-                </div>
-                <p className="text-xs sm:text-sm text-slate-600">
-                  {goal.description}
-                </p>
-              </motion.div>
-            );
-          })}
-        </div>
+                  <div
+                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${goal.color} flex items-center justify-center mb-3 sm:mb-4 sky-glow`}
+                  >
+                    <Icon size={24} className="sm:w-7 sm:h-7 text-white" />
+                  </div>
+                  <h3 className="font-bold text-slate-900 text-base sm:text-lg mb-2">
+                    {goal.title}
+                  </h3>
+                  <div className="text-3xl sm:text-4xl font-bold text-sky-600 mb-2">
+                    {goal.value}
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-600">
+                    {goal.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div> */}
       </div>
 
       {/* Live Performance */}
