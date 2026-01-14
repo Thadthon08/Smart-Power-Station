@@ -30,7 +30,7 @@ export default function HomeDashboard() {
   const qualityGoals = [
     {
       id: 1,
-      item: "เสียบการบดูถ้ว เนื่องจากข้อยกพรอง ของเหมก",
+      item: "เสียเวลาหยุดหีบ เนื่องจากข้อบกพร่องของแผนก",
       target: "0 ครั้ง",
       monthly: 0,
       accumulated: 0,
@@ -46,7 +46,7 @@ export default function HomeDashboard() {
     },
     {
       id: 3,
-      item: "การดับไฟขนโรงไฟฟ้าผาบใช้ในโรงงาน น้ำภาค โดยให้รวยสลัคไฟฟ้าในนามารถ ถายได้ 32 MW",
+      item: "การดึงไฟฟ้าจากโรงไฟฟ้าเข้ามาใช้ในโรงงานน้ำตาล โดยที่เครื่องผลิตไฟฟ้าไม่ขสามารถจ่ายได้ 32 MW",
       target: "1 ครั้ง",
       monthly: 0,
       accumulated: 0,
@@ -62,7 +62,7 @@ export default function HomeDashboard() {
     },
     {
       id: 5,
-      item: "ไม่มีอุบัติเหตุในหน่วยงาน ตามตั้งเป้าแผนกตลอง",
+      item: "ไม่มีอุบัติเหตุในหน่วยงาน (จนถึงขั้นหยุดงาน)",
       target: "0 ครั้ง",
       monthly: 0,
       accumulated: 0,
@@ -70,7 +70,7 @@ export default function HomeDashboard() {
     },
     {
       id: 6,
-      item: "Kaizen ตามแผนโดยเฉพาะของหน่วยงาน",
+      item: "Kaizen ตามนโยบาย/ปัญหาของหน่วยงาน",
       target: "3 เรื่องปี",
       monthly: 0,
       accumulated: 0,
