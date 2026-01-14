@@ -1,5 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, BookOpen, Cog, FileText } from "lucide-react";
+import generatorPdf from "../assets/training_Generator.pdf";
+import steamTurbinePdf from "../assets/training_Steam Turbine.pdf";
 import { useNavigationStore } from "../store/navigationStore";
 
 const libraryCards = [
@@ -10,6 +12,7 @@ const libraryCards = [
     icon: Cog,
     color: "from-purple-400 to-indigo-500",
     description: "เอกสารและคู่มือกังหันไอน้ำ",
+    pdfUrl: steamTurbinePdf,
   },
   {
     id: "generator",
@@ -18,6 +21,7 @@ const libraryCards = [
     icon: Cog,
     color: "from-blue-400 to-cyan-500",
     description: "คู่มือและข้อมูลเครื่องกำเนิดไฟฟ้า",
+    pdfUrl: generatorPdf,
   },
   {
     id: "wi-starting",
@@ -26,6 +30,7 @@ const libraryCards = [
     icon: FileText,
     color: "from-rose-400 to-pink-500",
     description: "Work Instruction การสตาร์ทกังหันไอน้ำ",
+    pdfUrl: steamTurbinePdf,
   },
   {
     id: "wi-sync",
@@ -34,11 +39,16 @@ const libraryCards = [
     icon: FileText,
     color: "from-teal-400 to-emerald-500",
     description: "Work Instruction การซิงโครไนซ์อัลเทอร์เนเตอร์",
+    pdfUrl: generatorPdf,
   },
 ];
 
 export default function DigitalLibrary() {
   const { librarySubMenu, setLibrarySubMenu } = useNavigationStore();
+
+  const openPdf = (pdfUrl: string, title: string) => {
+    window.open(pdfUrl, "_blank", "noopener,noreferrer");
+  };
 
   if (librarySubMenu) {
     return (
@@ -124,7 +134,11 @@ export default function DigitalLibrary() {
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.03, y: -5 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setLibrarySubMenu(card.title)}
+                onClick={() =>
+                  card.pdfUrl
+                    ? openPdf(card.pdfUrl, card.title)
+                    : setLibrarySubMenu(card.title)
+                }
                 className="glass-panel p-6 sm:p-8 rounded-xl sm:rounded-2xl text-left hover:shadow-xl transition-all"
               >
                 <div
