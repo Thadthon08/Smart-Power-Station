@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Target, TrendingUp, Zap } from "lucide-react";
+import { FileText, Shield, Target, TrendingUp, Zap } from "lucide-react";
 import LivePerformance from "./LivePerformance";
 
 export default function HomeDashboard() {
@@ -24,6 +24,57 @@ export default function HomeDashboard() {
       value: "95.2%",
       description: "Efficiency Rating",
       color: "from-amber-400 to-orange-500",
+    },
+  ];
+
+  const qualityGoals = [
+    {
+      id: 1,
+      item: "เสียบการบดูถ้ว เนื่องจากข้อยกพรอง ของเหมก",
+      target: "0 ครั้ง",
+      monthly: 0,
+      accumulated: 0,
+      difference: 0,
+    },
+    {
+      id: 2,
+      item: "ต้องไม่มี Rotor Gear Generator หลัง Test Run",
+      target: "0 ครั้ง",
+      monthly: 0,
+      accumulated: 0,
+      difference: 0,
+    },
+    {
+      id: 3,
+      item: "การดับไฟขนโรงไฟฟ้าผาบใช้ในโรงงาน น้ำภาค โดยให้รวยสลัคไฟฟ้าในนามารถ ถายได้ 32 MW",
+      target: "1 ครั้ง",
+      monthly: 0,
+      accumulated: 0,
+      difference: 0,
+    },
+    {
+      id: 4,
+      item: "งบการซ่อมบำรุง",
+      target: "ไม่เกิน 100%",
+      monthly: 0,
+      accumulated: 0,
+      difference: 0,
+    },
+    {
+      id: 5,
+      item: "ไม่มีอุบัติเหตุในหน่วยงาน ตามตั้งเป้าแผนกตลอง",
+      target: "0 ครั้ง",
+      monthly: 0,
+      accumulated: 0,
+      difference: 0,
+    },
+    {
+      id: 6,
+      item: "Kaizen ตามแผนโดยเฉพาะของหน่วยงาน",
+      target: "3 เรื่องปี",
+      monthly: 0,
+      accumulated: 0,
+      difference: 0,
     },
   ];
 
@@ -67,9 +118,92 @@ export default function HomeDashboard() {
 
       {/* Department Goals */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-4 sm:mb-6">
-          เป้าหมายประจำปี
-        </h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center">
+            <FileText size={20} className="text-white" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900">
+            เป้าหมายคุณภาพ : แผนกไฟฟ้าหลัก ( LP )
+          </h2>
+        </div>
+
+        {/* Quality Goals Table */}
+        <div className="glass-panel rounded-2xl overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gradient-to-r from-sky-500 to-blue-600 text-white">
+                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-sky-400/50">
+                    ลำดับ
+                  </th>
+                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-sky-400/50">
+                    รายการ
+                  </th>
+                  <th className="px-4 py-4 text-center text-sm font-semibold border-r border-sky-400/50">
+                    <div>เป้าหมาย</div>
+                    <div className="text-xs font-normal">ปี 68/69</div>
+                  </th>
+                  <th
+                    className="px-6 py-4 text-center text-sm font-semibold border-r border-sky-400/50"
+                    colSpan={2}
+                  >
+                    ผลงานที่ทำได้
+                  </th>
+                  <th className="px-4 py-4 text-center text-sm font-semibold">
+                    ผลต่าง
+                  </th>
+                </tr>
+                <tr className="bg-sky-500/90 text-white">
+                  <th className="border-t border-sky-400/50"></th>
+                  <th className="border-t border-sky-400/50"></th>
+                  <th className="border-t border-sky-400/50"></th>
+                  <th className="px-4 py-2 text-center text-xs font-medium border-t border-r border-sky-400/50">
+                    ประจำสัปดาห์
+                  </th>
+                  <th className="px-4 py-2 text-center text-xs font-medium border-t border-r border-sky-400/50">
+                    สะสม
+                  </th>
+                  <th className="border-t border-sky-400/50"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {qualityGoals.map((goal, index) => (
+                  <motion.tr
+                    key={goal.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="hover:bg-sky-50/50 transition-colors border-b border-slate-200 last:border-b-0"
+                  >
+                    <td className="px-4 py-4 text-center text-sm font-medium text-slate-700 border-r border-slate-200">
+                      {goal.id}
+                    </td>
+                    <td className="px-4 py-4 text-sm text-slate-800 border-r border-slate-200">
+                      {goal.item}
+                    </td>
+                    <td className="px-4 py-4 text-center text-sm font-semibold text-sky-600 border-r border-slate-200">
+                      {goal.target}
+                    </td>
+                    <td className="px-4 py-4 text-center text-sm font-medium text-slate-700 border-r border-slate-200">
+                      {goal.monthly}
+                    </td>
+                    <td className="px-4 py-4 text-center text-sm font-medium text-slate-700 border-r border-slate-200">
+                      {goal.accumulated}
+                    </td>
+                    <td className="px-4 py-4 text-center text-sm font-medium text-slate-700">
+                      {goal.difference}
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Original Goals Cards */}
+        <h3 className="text-xl font-bold text-slate-900 mb-4 mt-8">
+          เป้าหมายหลัก
+        </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
           {goals.map((goal, index) => {
             const Icon = goal.icon;
