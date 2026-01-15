@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-import { AlertCircle, CheckCircle2, ClipboardCheck, Clock } from "lucide-react";
 import {
   Area,
   AreaChart,
@@ -9,48 +7,42 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useComplianceStore } from "../store/complianceStore";
-import { useTaskStore } from "../store/taskStore";
 
 export default function LivePerformance() {
-  const { tasks, getTaskStats, toggleTask } = useTaskStore();
-  const { records } = useComplianceStore();
-  const stats = getTaskStats();
-
-  // Mock data for Power Output chart
+  // Mock data for Power Output chart - Monthly (1-31 days)
   const powerData = [
-    { time: "00:00", mw: 245 },
-    { time: "04:00", mw: 238 },
-    { time: "08:00", mw: 268 },
-    { time: "12:00", mw: 285 },
-    { time: "16:00", mw: 292 },
-    { time: "20:00", mw: 275 },
-    { time: "24:00", mw: 250 },
+    { day: "1", mw: 245 },
+    { day: "2", mw: 238 },
+    { day: "3", mw: 268 },
+    { day: "4", mw: 285 },
+    { day: "5", mw: 292 },
+    { day: "6", mw: 275 },
+    { day: "7", mw: 250 },
+    { day: "8", mw: 258 },
+    { day: "9", mw: 272 },
+    { day: "10", mw: 280 },
+    { day: "11", mw: 288 },
+    { day: "12", mw: 295 },
+    { day: "13", mw: 282 },
+    { day: "14", mw: 265 },
+    { day: "15", mw: 248 },
+    { day: "16", mw: 242 },
+    { day: "17", mw: 260 },
+    { day: "18", mw: 278 },
+    { day: "19", mw: 290 },
+    { day: "20", mw: 293 },
+    { day: "21", mw: 287 },
+    { day: "22", mw: 270 },
+    { day: "23", mw: 255 },
+    { day: "24", mw: 247 },
+    { day: "25", mw: 252 },
+    { day: "26", mw: 268 },
+    { day: "27", mw: 283 },
+    { day: "28", mw: 291 },
+    { day: "29", mw: 286 },
+    { day: "30", mw: 273 },
+    { day: "31", mw: 258 },
   ];
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case "สูง":
-        return "bg-red-100 text-red-700 border-red-200";
-      case "ปานกลาง":
-        return "bg-amber-100 text-amber-700 border-amber-200";
-      case "ต่ำ":
-        return "bg-emerald-100 text-emerald-700 border-emerald-200";
-      default:
-        return "bg-slate-100 text-slate-700 border-slate-200";
-    }
-  };
-
-  const getPriorityIcon = (priority: string) => {
-    switch (priority) {
-      case "สูง":
-        return <AlertCircle size={14} />;
-      case "ปานกลาง":
-        return <Clock size={14} />;
-      default:
-        return <CheckCircle2 size={14} />;
-    }
-  };
 
   return (
     <div>
@@ -58,105 +50,17 @@ export default function LivePerformance() {
         ประสิทธิภาพแบบเรียลไทม์
       </h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-        {/* Daily Tasks Progress */}
-        <div className="lg:col-span-1">
-          <div className="glass-panel p-5 sm:p-6 rounded-xl sm:rounded-2xl">
-            <h3 className="font-bold text-slate-900 mb-4">งานประจำวัน</h3>
-
-            {/* Circular Progress */}
-            <div className="flex justify-center items-center mb-6">
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40">
-                <svg className="transform -rotate-90 w-32 h-32 sm:w-40 sm:h-40">
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="currentColor"
-                    strokeWidth="10"
-                    fill="none"
-                    className="text-sky-100 sm:hidden"
-                  />
-                  <circle
-                    cx="80"
-                    cy="80"
-                    r="70"
-                    stroke="currentColor"
-                    strokeWidth="12"
-                    fill="none"
-                    className="text-sky-100 hidden sm:block"
-                  />
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="currentColor"
-                    strokeWidth="10"
-                    fill="none"
-                    strokeDasharray={`${2 * Math.PI * 56}`}
-                    strokeDashoffset={`${
-                      2 * Math.PI * 56 * (1 - stats.completionRate / 100)
-                    }`}
-                    className="text-sky-500 transition-all duration-500 sm:hidden"
-                    strokeLinecap="round"
-                  />
-                  <circle
-                    cx="80"
-                    cy="80"
-                    r="70"
-                    stroke="currentColor"
-                    strokeWidth="12"
-                    fill="none"
-                    strokeDasharray={`${2 * Math.PI * 70}`}
-                    strokeDashoffset={`${
-                      2 * Math.PI * 70 * (1 - stats.completionRate / 100)
-                    }`}
-                    className="text-sky-500 transition-all duration-500 hidden sm:block"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-3xl sm:text-4xl font-bold text-sky-600">
-                    {stats.completionRate}%
-                  </span>
-                  <span className="text-xs sm:text-sm text-slate-500">
-                    เสร็จสิ้น
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex justify-between text-xs sm:text-sm">
-                <span className="text-slate-600">งานทั้งหมด</span>
-                <span className="font-semibold text-slate-900">
-                  {stats.total} งาน
-                </span>
-              </div>
-              <div className="flex justify-between text-xs sm:text-sm">
-                <span className="text-slate-600">เสร็จแล้ว</span>
-                <span className="font-semibold text-emerald-600">
-                  {stats.completed} งาน
-                </span>
-              </div>
-              <div className="flex justify-between text-xs sm:text-sm">
-                <span className="text-slate-600">คงเหลือ</span>
-                <span className="font-semibold text-amber-600">
-                  {stats.total - stats.completed} งาน
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <div className="gap-4 sm:gap-6">
         {/* Power Output Chart */}
         <div className="lg:col-span-2">
           <div className="glass-panel p-5 sm:p-6 rounded-xl sm:rounded-2xl">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mb-4">
               <h3 className="font-bold text-slate-900 text-sm sm:text-base">
-                กราฟกำลังไฟฟ้า (Power Output)
+                กราฟปริมาณการขายไฟ Feeder (8 mw)
               </h3>
-              <span className="text-xs sm:text-sm text-slate-500">วันนี้</span>
+              <span className="text-xs sm:text-sm text-slate-500">
+                เดือนนี้
+              </span>
             </div>
 
             <div className="h-48 sm:h-56 md:h-64">
@@ -174,7 +78,7 @@ export default function LivePerformance() {
                     vertical={false}
                   />
                   <XAxis
-                    dataKey="time"
+                    dataKey="day"
                     stroke="#64748b"
                     tick={{ fill: "#64748b", fontSize: 12 }}
                     axisLine={false}
@@ -208,126 +112,6 @@ export default function LivePerformance() {
               </ResponsiveContainer>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Task List */}
-      <div className="mt-4 sm:mt-6 glass-panel p-4 sm:p-6 rounded-xl sm:rounded-2xl">
-        <h3 className="font-bold text-slate-900 mb-3 sm:mb-4 text-sm sm:text-base">
-          รายการงานวันนี้
-        </h3>
-        <div className="space-y-2 sm:space-y-3">
-          {/* Regular Tasks */}
-          {tasks.slice(0, 3).map((task) => (
-            <motion.div
-              key={task.id}
-              layout
-              className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border transition-all ${
-                task.completed
-                  ? "bg-slate-50 border-slate-200 opacity-60"
-                  : "bg-white border-sky-200 hover:border-sky-400"
-              }`}
-            >
-              <button
-                onClick={() => toggleTask(task.id)}
-                className={`w-5 h-5 sm:w-6 sm:h-6 rounded-md border-2 flex items-center justify-center transition-colors flex-shrink-0 ${
-                  task.completed
-                    ? "bg-sky-500 border-sky-500"
-                    : "border-slate-300 hover:border-sky-400"
-                }`}
-              >
-                {task.completed && (
-                  <CheckCircle2
-                    size={14}
-                    className="sm:w-4 sm:h-4 text-white"
-                  />
-                )}
-              </button>
-
-              <div className="flex-1 min-w-0">
-                <p
-                  className={`font-medium text-sm sm:text-base truncate ${
-                    task.completed
-                      ? "text-slate-400 line-through"
-                      : "text-slate-900"
-                  }`}
-                >
-                  {task.title}
-                </p>
-                {task.category && (
-                  <span className="text-[10px] sm:text-xs text-slate-500">
-                    {task.category}
-                  </span>
-                )}
-              </div>
-
-              <span
-                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold border flex-shrink-0 ${getPriorityColor(
-                  task.priority
-                )}`}
-              >
-                <span className="hidden sm:inline">
-                  {getPriorityIcon(task.priority)}
-                </span>
-                {task.priority}
-              </span>
-            </motion.div>
-          ))}
-
-          {/* Compliance Records */}
-          {records.slice(0, 2).map((record) => {
-            const completedItems = record.checklist.filter(
-              (item) => item.checked
-            ).length;
-            const totalItems = record.checklist.length;
-            const progress = Math.round((completedItems / totalItems) * 100);
-
-            return (
-              <motion.div
-                key={record.id}
-                layout
-                className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border bg-white border-purple-200 hover:border-purple-400 transition-all"
-              >
-                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-purple-100 flex items-center justify-center flex-shrink-0">
-                  <ClipboardCheck
-                    size={14}
-                    className="sm:w-4 sm:h-4 text-purple-600"
-                  />
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-900 text-sm sm:text-base truncate">
-                    {record.equipmentName} - {record.documentType}
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-[10px] sm:text-xs text-slate-500 whitespace-nowrap">
-                      ความคืบหน้า: {completedItems}/{totalItems}
-                    </span>
-                    <div className="flex-1 max-w-[80px] sm:max-w-[120px] h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-purple-500 transition-all"
-                        style={{ width: `${progress}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <span
-                  className={`px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold flex-shrink-0 ${
-                    record.status === "ผ่าน"
-                      ? "bg-emerald-100 text-emerald-700"
-                      : record.status === "ไม่ผ่าน"
-                      ? "bg-red-100 text-red-700"
-                      : record.status === "ต้องแก้ไข"
-                      ? "bg-amber-100 text-amber-700"
-                      : "bg-slate-100 text-slate-700"
-                  }`}
-                >
-                  {record.status}
-                </span>
-              </motion.div>
-            );
-          })}
         </div>
       </div>
     </div>

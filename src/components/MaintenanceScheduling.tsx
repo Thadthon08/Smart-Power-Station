@@ -1,382 +1,186 @@
 import { motion } from "framer-motion";
-import {
-  AlertCircle,
-  Calendar,
-  CheckCircle2,
-  Clock,
-  Edit2,
-  Plus,
-  Trash2,
-  User,
-} from "lucide-react";
+import { Download, ExternalLink, FileSpreadsheet, X } from "lucide-react";
 import { useState } from "react";
-import {
-  type MaintenanceType,
-  useMaintenanceStore,
-} from "../store/maintenanceStore";
 
 export default function MaintenanceScheduling() {
-  const {
-    schedules,
-    addSchedule,
-    deleteSchedule,
-    toggleStatus,
-    updateSchedule,
-  } = useMaintenanceStore();
-  const [showForm, setShowForm] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    equipment: "",
-    type: "Preventive" as MaintenanceType,
-    description: "",
-    scheduledDate: "",
-    assignedTo: "",
-  });
+  const [loading] = useState(false);
+  const [showWebViewer, setShowWebViewer] = useState(false);
+  const excelFilePath = "/src/assets/แผนงานซ่อม FM-PC-13 (1).xlsx";
+  const excelOnlineUrl =
+    "https://1drv.ms/x/c/bb37c779b8faa0bc/IQB1IHRbeY6-T6raaWdYtOjqAcflSj9dC8du2cIDQxNg5Yc?e=3L5msf";
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (editingId) {
-      updateSchedule(editingId, formData);
-      setEditingId(null);
-    } else {
-      addSchedule(
-        formData.equipment,
-        formData.type,
-        formData.description,
-        formData.scheduledDate,
-        formData.assignedTo
-      );
-    }
-    setFormData({
-      equipment: "",
-      type: "Preventive",
-      description: "",
-      scheduledDate: "",
-      assignedTo: "",
-    });
-    setShowForm(false);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleEdit = (schedule: any) => {
-    setFormData({
-      equipment: schedule.equipment,
-      type: schedule.type,
-      description: schedule.description,
-      scheduledDate: schedule.scheduledDate,
-      assignedTo: schedule.assignedTo,
-    });
-    setEditingId(schedule.id);
-    setShowForm(true);
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "รอดำเนินการ":
-        return "bg-amber-100 text-amber-700 border-amber-200";
-      case "กำลังดำเนินการ":
-        return "bg-blue-100 text-blue-700 border-blue-200";
-      case "เสร็จสิ้น":
-        return "bg-emerald-100 text-emerald-700 border-emerald-200";
-      default:
-        return "bg-slate-100 text-slate-700 border-slate-200";
+  const openExcelFile = async () => {
+    try {
+      // Download the file and open it
+      const response = await fetch(excelFilePath);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "แผนงานซ่อม FM-PC-13.xlsx";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error opening Excel file:", error);
+      alert("ไม่สามารถเปิดไฟล์ Excel ได้");
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "รอดำเนินการ":
-        return <Clock size={14} />;
-      case "กำลังดำเนินการ":
-        return <AlertCircle size={14} />;
-      case "เสร็จสิ้น":
-        return <CheckCircle2 size={14} />;
-      default:
-        return <Clock size={14} />;
-    }
+  const openInOfficeViewer = () => {
+    // Open the OneDrive Excel Online link directly
+    window.open(excelOnlineUrl, "_blank");
   };
 
-  const getTypeColor = (type: MaintenanceType) => {
-    switch (type) {
-      case "Preventive":
-        return "bg-sky-100 text-sky-700";
-      case "Corrective":
-        return "bg-orange-100 text-orange-700";
-      case "Predictive":
-        return "bg-purple-100 text-purple-700";
-      case "Emergency":
-        return "bg-red-100 text-red-700";
-      default:
-        return "bg-slate-100 text-slate-700";
-    }
-  };
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-sky-500 mx-auto mb-4"></div>
+          <p className="text-slate-600">กำลังโหลดแผนงานซ่อม...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-6">
-      {/* Header with Add Button */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-2xl font-bold text-slate-900">
-            ตารางงานบำรุงรักษา
-          </h3>
-          <p className="text-slate-600 text-sm mt-1">
-            จัดการและติดตามงานบำรุงรักษาทั้งหมด
-          </p>
-        </div>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => {
-            setShowForm(!showForm);
-            setEditingId(null);
-            setFormData({
-              equipment: "",
-              type: "Preventive",
-              description: "",
-              scheduledDate: "",
-              assignedTo: "",
-            });
-          }}
-          className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold rounded-xl shadow-lg sky-glow hover:shadow-xl transition-all"
-        >
-          <Plus size={20} />
-          เพิ่มงานบำรุงรักษา
-        </motion.button>
-      </div>
-
-      {/* Add/Edit Form */}
-      {showForm && (
+    <>
+      {/* Web Viewer Modal */}
+      {showWebViewer && (
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="glass-panel p-6 rounded-2xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowWebViewer(false)}
         >
-          <h4 className="font-bold text-slate-900 mb-4">
-            {editingId ? "แก้ไขงานบำรุงรักษา" : "เพิ่มงานบำรุงรักษาใหม่"}
-          </h4>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  ชื่ออุปกรณ์
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.equipment}
-                  onChange={(e) =>
-                    setFormData({ ...formData, equipment: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-white border border-sky-200 rounded-xl focus:outline-none focus:border-sky-500 transition-colors"
-                  placeholder="เช่น Gas Turbine Unit 1"
-                />
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl w-full max-w-7xl h-[90vh] flex flex-col shadow-2xl"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-gradient-to-r from-blue-50 to-sky-50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-sky-600 rounded-lg flex items-center justify-center">
+                  <FileSpreadsheet size={20} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900">
+                    แผนงานซ่อม FM-PC-13
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Microsoft Excel Viewer
+                  </p>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  ประเภทงาน
-                </label>
-                <select
-                  value={formData.type}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      type: e.target.value as MaintenanceType,
-                    })
-                  }
-                  className="w-full px-4 py-3 bg-white border border-sky-200 rounded-xl focus:outline-none focus:border-sky-500 transition-colors"
-                >
-                  <option value="Preventive">Preventive (ป้องกัน)</option>
-                  <option value="Corrective">Corrective (แก้ไข)</option>
-                  <option value="Predictive">Predictive (คาดการณ์)</option>
-                  <option value="Emergency">Emergency (ฉุกเฉิน)</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                รายละเอียดงาน
-              </label>
-              <textarea
-                required
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-                className="w-full px-4 py-3 bg-white border border-sky-200 rounded-xl focus:outline-none focus:border-sky-500 transition-colors"
-                rows={3}
-                placeholder="อธิบายงานที่ต้องทำ..."
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  วันที่กำหนด
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={formData.scheduledDate}
-                  onChange={(e) =>
-                    setFormData({ ...formData, scheduledDate: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-white border border-sky-200 rounded-xl focus:outline-none focus:border-sky-500 transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  ผู้รับผิดชอบ
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.assignedTo}
-                  onChange={(e) =>
-                    setFormData({ ...formData, assignedTo: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-white border border-sky-200 rounded-xl focus:outline-none focus:border-sky-500 transition-colors"
-                  placeholder="เช่น ทีมช่าง A"
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-3 justify-end">
               <button
-                type="button"
-                onClick={() => {
-                  setShowForm(false);
-                  setEditingId(null);
-                }}
-                className="px-5 py-2.5 bg-slate-100 text-slate-700 font-semibold rounded-xl hover:bg-slate-200 transition-colors"
+                onClick={() => setShowWebViewer(false)}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
               >
-                ยกเลิก
-              </button>
-              <button
-                type="submit"
-                className="px-5 py-2.5 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all"
-              >
-                {editingId ? "บันทึกการแก้ไข" : "เพิ่มงาน"}
+                <X size={24} className="text-slate-600" />
               </button>
             </div>
-          </form>
+
+            {/* Excel Viewer Content */}
+            <div className="flex-1 overflow-hidden p-6 bg-slate-50">
+              <div className="h-full bg-white rounded-xl border-2 border-slate-200 shadow-inner overflow-auto">
+                <iframe
+                  src={excelFilePath}
+                  title="Excel Viewer"
+                  className="w-full h-full"
+                  style={{ border: "none" }}
+                  onError={() => {
+                    // Fallback: Show message if iframe doesn't work
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 border-t border-slate-200 bg-white flex justify-between items-center">
+              <div className="text-sm text-slate-600">
+                <span className="font-semibold">💡 เคล็ดลับ:</span>{" "}
+                คลิกที่เซลล์เพื่อดูข้อมูลโดยละเอียด
+              </div>
+              <button
+                onClick={openExcelFile}
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all"
+              >
+                <Download size={16} />
+                ดาวน์โหลด
+              </button>
+            </div>
+          </motion.div>
         </motion.div>
       )}
 
-      {/* Schedule List */}
-      <div className="space-y-3">
-        {schedules.length === 0 ? (
-          <div className="glass-panel p-12 rounded-2xl text-center">
-            <Calendar size={48} className="mx-auto text-slate-300 mb-4" />
-            <p className="text-slate-500">ยังไม่มีงานบำรุงรักษา</p>
-            <p className="text-sm text-slate-400 mt-1">
-              คลิกปุ่ม "เพิ่มงานบำรุงรักษา" เพื่อเริ่มต้น
-            </p>
-          </div>
-        ) : (
-          schedules.map((schedule) => (
-            <motion.div
-              key={schedule.id}
-              layout
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`glass-panel p-5 rounded-xl hover:shadow-lg transition-all ${
-                schedule.status === "เสร็จสิ้น" ? "opacity-70" : ""
-              }`}
-            >
-              <div className="flex items-start gap-4">
-                {/* Status Indicator */}
-                <button
-                  onClick={() => toggleStatus(schedule.id)}
-                  className={`mt-1 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${
-                    schedule.status === "เสร็จสิ้น"
-                      ? "bg-emerald-500 border-emerald-500"
-                      : "border-slate-300 hover:border-sky-400"
-                  }`}
-                >
-                  {schedule.status === "เสร็จสิ้น" && (
-                    <CheckCircle2 size={14} className="text-white" />
-                  )}
-                </button>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="text-center">
+          <h3 className="text-3xl font-bold text-slate-900 mb-2">
+            แผนงานซ่อม FM-PC-13
+          </h3>
+          <p className="text-slate-600 text-lg">
+            คลิกเพื่อเปิดไฟล์ใน Excel Online
+          </p>
+        </div>
 
-                {/* Content */}
-                <div className="flex-1">
-                  <div className="flex items-start justify-between gap-4 mb-2">
-                    <div>
-                      <h4
-                        className={`font-bold text-lg ${
-                          schedule.status === "เสร็จสิ้น"
-                            ? "text-slate-400 line-through"
-                            : "text-slate-900"
-                        }`}
-                      >
-                        {schedule.equipment}
-                      </h4>
-                      <p
-                        className={`text-sm mt-1 ${
-                          schedule.status === "เสร็จสิ้น"
-                            ? "text-slate-400"
-                            : "text-slate-600"
-                        }`}
-                      >
-                        {schedule.description}
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleEdit(schedule)}
-                        className="p-2 text-sky-600 hover:bg-sky-50 rounded-lg transition-colors"
-                      >
-                        <Edit2 size={18} />
-                      </button>
-                      <button
-                        onClick={() => deleteSchedule(schedule.id)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Meta Information */}
-                  <div className="flex flex-wrap items-center gap-3 mt-3">
-                    <span
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
-                        schedule.status
-                      )}`}
-                    >
-                      {getStatusIcon(schedule.status)}
-                      {schedule.status}
-                    </span>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${getTypeColor(
-                        schedule.type
-                      )}`}
-                    >
-                      {schedule.type}
-                    </span>
-                    <span className="flex items-center gap-1.5 text-xs text-slate-500">
-                      <Calendar size={12} />
-                      {new Date(schedule.scheduledDate).toLocaleDateString(
-                        "th-TH",
-                        {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        }
-                      )}
-                    </span>
-                    <span className="flex items-center gap-1.5 text-xs text-slate-500">
-                      <User size={12} />
-                      {schedule.assignedTo}
-                    </span>
-                  </div>
-                </div>
+        {/* Single Card - Excel Online */}
+        <div className="max-w-2xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-panel p-12 rounded-2xl hover:shadow-xl transition-all cursor-pointer"
+            onClick={openInOfficeViewer}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <div className="flex flex-col items-center text-center">
+              <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-sky-600 rounded-3xl flex items-center justify-center mb-6 shadow-xl">
+                <ExternalLink size={48} className="text-white" />
               </div>
-            </motion.div>
-          ))
-        )}
+              <h4 className="text-2xl font-bold text-slate-900 mb-3">
+                เปิดใน Excel Online
+              </h4>
+              <p className="text-slate-600 mb-6 text-lg">
+                แก้ไขไฟล์ได้โดยตรงบน Microsoft Excel Online
+              </p>
+              <span className="px-6 py-3 bg-gradient-to-r from-blue-500 to-sky-600 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all">
+                เปิดไฟล์ทันที
+              </span>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Info Section */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="glass-panel p-6 rounded-2xl max-w-2xl mx-auto"
+        >
+          <h5 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
+            <FileSpreadsheet size={18} className="text-sky-500" />
+            ข้อมูลไฟล์
+          </h5>
+          <div className="space-y-2 text-sm text-slate-600">
+            <div className="flex justify-between">
+              <span>ชื่อไฟล์:</span>
+              <span className="font-semibold">แผนงานซ่อม FM-PC-13.xlsx</span>
+            </div>
+            <div className="flex justify-between">
+              <span>สถานะ:</span>
+              <span className="font-semibold text-green-600">พร้อมใช้งาน</span>
+            </div>
+            <div className="flex justify-between">
+              <span>รูปแบบ:</span>
+              <span className="font-semibold">Microsoft Excel Online</span>
+            </div>
+          </div>
+        </motion.div>
       </div>
-    </div>
+    </>
   );
 }

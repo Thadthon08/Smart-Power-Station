@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, Calendar, FileCheck, History } from "lucide-react";
+import { ArrowLeft, Calendar, FileCheck } from "lucide-react";
 import { useNavigationStore } from "../store/navigationStore";
 import ComplianceTracking from "./ComplianceTracking";
 import MaintenanceScheduling from "./MaintenanceScheduling";
@@ -20,14 +20,6 @@ const maintenanceCards = [
     icon: FileCheck,
     color: "from-emerald-400 to-green-500",
     description: "ติดตามความสอดคล้องตามมาตรฐาน",
-  },
-  {
-    id: "history",
-    title: "Maintenance History",
-    subtitle: "ประวัติการบำรุงรักษา",
-    icon: History,
-    color: "from-amber-400 to-orange-500",
-    description: "ดูประวัติการบำรุงรักษาย้อนหลัง",
   },
 ];
 
@@ -95,7 +87,7 @@ export default function MaintenanceCenter() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6">
         <AnimatePresence>
           {maintenanceCards.map((card, index) => {
             const Icon = card.icon;
